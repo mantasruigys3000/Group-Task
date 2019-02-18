@@ -53,8 +53,8 @@ def get_valid_password():
             print("Passwords do not match. Type 0 to enter a new password.")
             password_check = input("Re-enter password: ")
 
-            if password_orig == password_check:
-                valid_password = True
+        if password_orig == password_check:
+            valid_password = True
 
     return password_orig
 
@@ -65,10 +65,10 @@ def hash_password(pwd):
     :return: tuple of (hashed password, salt)
     """
 
-    salt = random.randint(1000, 1000000)
-    hashed_password = hashlib.sha512(pwd + salt).hexdigest()
+    salt = "abcdefghijklmmopqrstuvxyz"
+    hashed_password = hashlib.sha512(str(pwd + salt).encode("utf-8")).hexdigest()
 
-    return tuple(hashed_password, salt)
+    return hashed_password, salt
 
 
 def credentials_to_dictionary(file_path):
@@ -84,11 +84,10 @@ def credentials_to_dictionary(file_path):
     try:
         with open(file_path, "r") as file:
             for line in file:
-                values = line.split(":")
-                credential_dict[values[0]] = tuple(values[1], values[2])
+                values = line.replace("\n", "").split(":")
+                credential_dict[values[0]] = values[1], values[2]
     except OSError as e:
-        print("Error: ".format(e))
-        print("Could not read from file: {}".format(file_path))
+        print("Could not read from file: {}. We will create a new one.".format(file_path))
         pass
 
     return credential_dict
@@ -104,10 +103,10 @@ def output_credentials(file_path, credentials_dict):
     try:
         with open(file_path, "w") as f:
             for key, value in credentials_dict.items():
-                f.write("{}:{}:{}".format(key, value[0], value[1]))
+                f.write("{}:{}:{}\n".format(key, value[0], value[1]))
     except OSError as e:
-        print("Error: ".format(e))
-        print("Could not write to file: {}".format(file_path))
+        print("Could not write to file: {}. Check you have permissions.".format(file_path))
+        # this could be better handled, could ask for an alternative filename to try
         pass
 
 
@@ -120,9 +119,10 @@ def add_to_dictionary(cred_dict, user, pwd, salt):
     :param pwd: hashed password
     :param salt: the salt
     """
-    cred_dict[user] = tuple(pwd, salt)
+    cred_dict[user] = pwd, salt
 
 
+# Main
 # open and store password file
 password_file_path = input("Enter the filename where the credentials are stored: ")
 credentials_dictionary = credentials_to_dictionary(password_file_path)

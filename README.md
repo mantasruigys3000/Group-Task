@@ -6,4 +6,11 @@ This is the redesign of the provided source code for the task.
 
 ## TODO:
 - Hash passwords correctly
-- Test code
+- Test code after hashing finished
+
+## Working:
+- Username validation
+- Password validation
+- File loading
+- File output formatting
+
