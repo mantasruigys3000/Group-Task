@@ -1,5 +1,11 @@
 import os
 
+"""
+This program collects all usernames and passwords hidden in the L3 Folder and allows the user to pick the username
+for which they want to see the passwords for
+"""
+
+
 passwords = {} #dictionary of passwords with the users as the key
 
 def passSearch(lines): # function that takes list of lines from current open file
