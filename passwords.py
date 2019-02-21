@@ -52,7 +52,8 @@ def printPasswords(key):
     """
     print("Passwords for user "+key+":\n")
     for p in passwords[key]:
-        print(p)
+        print("Password: "+str(p[0]))
+        print("Location: "+str(p[1]) + "\n")
     
 print("Welcome to the password database, below are a list of users\ninput the user you wish to see the passwords of\nWrite exit to quit\n") #user prompt
 
